@@ -2,6 +2,7 @@ package com.goggxi.plugins
 
 import com.goggxi.routes.allHeroes
 import com.goggxi.routes.root
+import com.goggxi.routes.searchHero
 import io.ktor.routing.*
 import io.ktor.http.*
 import io.ktor.application.*
@@ -13,6 +14,7 @@ fun Application.configureRouting() {
     routing {
         root()
         allHeroes()
+        searchHero()
 
         static("/images") {
             resource("images")

@@ -6,7 +6,8 @@ import com.goggxi.model.HeroResponse
 
 const val NEXT_PAGE_KEY = "nextPage"
 const val PREVIOUS_PAGE_KEY = "prevPage"
-class HeroRepositoryImpl: HeroRepository {
+
+class HeroRepositoryImpl : HeroRepository {
 
     override val heroes: Map<Int, List<Hero>> by lazy {
         mapOf(
@@ -427,7 +428,27 @@ class HeroRepositoryImpl: HeroRepository {
         return mapOf(PREVIOUS_PAGE_KEY to prevPage, NEXT_PAGE_KEY to nextPage)
     }
 
-    override suspend fun searchHero(name: String): HeroResponse {
-        TODO("Not yet implemented")
+    override suspend fun searchHero(name: String?): HeroResponse {
+        return HeroResponse(
+            success = true,
+            message = "ok",
+            heroes = findHeroes(query = name)
+        )
+    }
+
+    private fun findHeroes(query: String?): List<Hero> {
+        val founded = mutableListOf<Hero>()
+        return if (!query.isNullOrEmpty()) {
+            heroes.forEach { (_, heroes) ->
+                heroes.forEach { hero ->
+                    if (hero.name.lowercase().contains(query.lowercase())) {
+                        founded.add(hero)
+                    }
+                }
+            }
+            founded
+        } else {
+            emptyList()
+        }
     }
 }
